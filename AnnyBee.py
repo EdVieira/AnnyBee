@@ -43,8 +43,8 @@ class AnnyBee(object):
         pickle_in.close()
         return z
 
-    def activationFunction(self, x, deriv=False):
-        if(deriv==True):
+    def activationFunction(self, x, d=False):
+        if(d):
             return x*(1-x)
         return 1/(1+np.exp(-x))
 
@@ -82,10 +82,10 @@ class AnnyBee(object):
         for i in xrange(len(synapsesList)):
             if i == 0:
                 error.append(deservedOutputs - layersActivations[i])
-                delta.append(error[0]*self.activationFunction(layersActivations[0],deriv=True))
+                delta.append(error[0]*self.activationFunction(layersActivations[0],True))
             else:
                 error.append(delta[i-1].dot(synapsesList[i-1].T))
-                delta.append(error[i]*self.activationFunction(layersActivations[i],deriv=True))
+                delta.append(error[i]*self.activationFunction(layersActivations[i],True))
         layersActivations.reverse()
         synapsesList.reverse()
         error.reverse()
@@ -116,7 +116,7 @@ class AnnyBee(object):
             if (self.min_error > error):
                 loop = False
             j = j + 1
-
+"""
 #Input
 xInput = np.array([[ 0,0 ],
             [   0,1 ],
@@ -142,3 +142,4 @@ ann.learnBP()
 
 #Show output
 print ann.activateNet()[-1]
+"""
