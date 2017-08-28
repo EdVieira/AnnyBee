@@ -116,7 +116,7 @@ class AnnyBee(object):
             if (self.min_error > error):
                 loop = False
             j = j + 1
-
+"""
 #Input
 xInput = np.array([[ 0,0 ],
             [   0,1 ],
@@ -142,3 +142,4 @@ ann.learnBP()
 
 #Show output
 print ann.activateNet()[-1]
+"""
