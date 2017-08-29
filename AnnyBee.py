@@ -27,8 +27,8 @@ class AnnyBee(object):
         super(AnnyBee, self).__init__()
         self.arg = arg
         self.synapses = self.randomSynapses(arg[0])
-        self.deservedInputs = arg[1]
-        self.deservedOutputs = arg[2]
+        self.deservedInputs = np.array(arg[1])
+        self.deservedOutputs = np.array(arg[2])
         self.min_error = arg[3]
     
     def save(name, ob):
@@ -118,22 +118,22 @@ class AnnyBee(object):
             j = j + 1
 """
 #Input
-xInput = np.array([[ 0,0 ],
-            [   0,1 ],
-            [   1,0 ],
-            [   1,1 ]])
+xInput =    [[ 0,0 ],
+            [  0,1 ],
+            [  1,0 ],
+            [  1,1 ]]
 #Output          
-s = np.array([[  0,1 ],
-			[    1,0 ],
-			[    1,0 ],
-			[    0,1 ]])
+yTargetOutputs =    [[ 0,1 ],
+                	[  1,0 ],
+                	[  1,0 ],
+                	[  0,1 ]]
 
 MinimalError = 0.001
 
 #Inicialization args[]:
 #[len(inputs), len(hidden1), len(hidden2)... len(output)
-#Input numpy.array()
-#Output numpy.array()
+#Input [listOfInputs]
+#Output [listOfOutputs]
 #Minimal error
 ann = AnnyBee([[2,3,3,2],xInput,yTargetOutputs,MinimalError])
 
@@ -141,5 +141,5 @@ ann = AnnyBee([[2,3,3,2],xInput,yTargetOutputs,MinimalError])
 ann.learnBP()
 
 #Show output
-print ann.activateNet()[-1]
+print ann.activateNet([0,1])[-1]
 """
