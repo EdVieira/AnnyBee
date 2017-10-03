@@ -27,8 +27,8 @@ class AnnyBee(object):
         super(AnnyBee, self).__init__()
         self.arg = arg
         self.synapses = self.randomSynapses(arg[0])
-        self.deservedInputs = arg[1]
-        self.deservedOutputs = arg[2]
+        self.desiredInputs = arg[1]
+        self.desiredOutputs = arg[2]
         self.min_error = arg[3]
     
     def save(name, ob):
@@ -50,7 +50,7 @@ class AnnyBee(object):
 
     def activateNet(self, inputList = None, synapsesList = None):
         if inputList is None:
-            inputList = self.deservedInputs
+            inputList = self.desiredInputs
         if synapsesList is None:
             synapsesList = self.synapses
         np.random.seed(1)
@@ -70,9 +70,9 @@ class AnnyBee(object):
                 synapses.append(2*np.random.random((listOfLayerHeights[i-1],listOfLayerHeights[i])) - 1)
         return synapses
 
-    def rateError(self, layersActivations, deservedOutputs = None, synapsesList = None):
-        if deservedOutputs is None:
-            deservedOutputs = copy.deepcopy(self.deservedOutputs)
+    def rateError(self, layersActivations, desiredOutputs = None, synapsesList = None):
+        if desiredOutputs is None:
+            desiredOutputs = copy.deepcopy(self.desiredOutputs)
         if synapsesList is None:
             synapsesList = copy.deepcopy(self.synapses)
         error = []
@@ -81,7 +81,7 @@ class AnnyBee(object):
         synapsesList.reverse()
         for i in xrange(len(synapsesList)):
             if i == 0:
-                error.append(deservedOutputs - layersActivations[i])
+                error.append(desiredOutputs - layersActivations[i])
                 delta.append(error[0]*self.activationFunction(layersActivations[0],True))
             else:
                 error.append(delta[i-1].dot(synapsesList[i-1].T))
@@ -96,18 +96,18 @@ class AnnyBee(object):
         for i in xrange(len(synapsesList)):
             synapsesList[i] += layersActivations[i].T.dot(deltaList[i])
 
-    def learnBP(self, synapsesList = None, inputList = None, deservedOutputs = None):
+    def learnBP(self, synapsesList = None, inputList = None, desiredOutputs = None):
         if synapsesList is None:
             synapsesList = self.synapses
         if inputList is None:
-            inputList = self.deservedInputs
-        if deservedOutputs is None:
-            deservedOutputs = self.deservedOutputs
+            inputList = self.desiredInputs
+        if desiredOutputs is None:
+            desiredOutputs = self.desiredOutputs
         loop = True
         j = 0
         while loop:
             layersActivations = self.activateNet(inputList, synapsesList)
-            delta = self.rateError(layersActivations, deservedOutputs,synapsesList)
+            delta = self.rateError(layersActivations, desiredOutputs,synapsesList)
             self.assignDelta(synapsesList, layersActivations, delta[0])
             error = np.mean(np.abs(delta[-1][1]))
             if (j% 10000) == 0:
