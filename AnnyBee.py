@@ -27,8 +27,13 @@ class AnnyBee(object):
         super(AnnyBee, self).__init__()
         self.arg = arg
         self.synapses = self.randomSynapses(arg[0])
+<<<<<<< HEAD
         self.desiredInputs = arg[1]
         self.desiredOutputs = arg[2]
+=======
+        self.deservedInputs = np.array(arg[1])
+        self.deservedOutputs = np.array(arg[2])
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
         self.min_error = arg[3]
     
     def save(name, ob):
@@ -45,12 +50,20 @@ class AnnyBee(object):
 
     def activationFunction(self, x, d=False):
         if(d):
+<<<<<<< HEAD
             return x*(1-x)
+=======
+            return (1-x)*x
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
         return 1/(1+np.exp(-x))
 
     def activateNet(self, inputList = None, synapsesList = None):
         if inputList is None:
+<<<<<<< HEAD
             inputList = self.desiredInputs
+=======
+            inputList = self.deservedInputs
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
         if synapsesList is None:
             synapsesList = self.synapses
         np.random.seed(1)
@@ -70,9 +83,15 @@ class AnnyBee(object):
                 synapses.append(2*np.random.random((listOfLayerHeights[i-1],listOfLayerHeights[i])) - 1)
         return synapses
 
+<<<<<<< HEAD
     def rateError(self, layersActivations, desiredOutputs = None, synapsesList = None):
         if desiredOutputs is None:
             desiredOutputs = copy.deepcopy(self.desiredOutputs)
+=======
+    def rateError(self, layersActivations, deservedOutputs = None, synapsesList = None):
+        if deservedOutputs is None:
+            deservedOutputs = copy.deepcopy(self.deservedOutputs)
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
         if synapsesList is None:
             synapsesList = copy.deepcopy(self.synapses)
         error = []
@@ -81,7 +100,11 @@ class AnnyBee(object):
         synapsesList.reverse()
         for i in xrange(len(synapsesList)):
             if i == 0:
+<<<<<<< HEAD
                 error.append(desiredOutputs - layersActivations[i])
+=======
+                error.append(deservedOutputs - layersActivations[i])
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
                 delta.append(error[0]*self.activationFunction(layersActivations[0],True))
             else:
                 error.append(delta[i-1].dot(synapsesList[i-1].T))
@@ -96,6 +119,7 @@ class AnnyBee(object):
         for i in xrange(len(synapsesList)):
             synapsesList[i] += layersActivations[i].T.dot(deltaList[i])
 
+<<<<<<< HEAD
     def learnBP(self, synapsesList = None, inputList = None, desiredOutputs = None):
         if synapsesList is None:
             synapsesList = self.synapses
@@ -103,11 +127,24 @@ class AnnyBee(object):
             inputList = self.desiredInputs
         if desiredOutputs is None:
             desiredOutputs = self.desiredOutputs
+=======
+    def learnBP(self, synapsesList = None, inputList = None, deservedOutputs = None):
+        if synapsesList is None:
+            synapsesList = self.synapses
+        if inputList is None:
+            inputList = self.deservedInputs
+        if deservedOutputs is None:
+            deservedOutputs = self.deservedOutputs
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
         loop = True
         j = 0
         while loop:
             layersActivations = self.activateNet(inputList, synapsesList)
+<<<<<<< HEAD
             delta = self.rateError(layersActivations, desiredOutputs,synapsesList)
+=======
+            delta = self.rateError(layersActivations, deservedOutputs,synapsesList)
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
             self.assignDelta(synapsesList, layersActivations, delta[0])
             error = np.mean(np.abs(delta[-1][1]))
             if (j% 10000) == 0:
@@ -118,6 +155,7 @@ class AnnyBee(object):
             j = j + 1
 """
 #Input
+<<<<<<< HEAD
 xInput = np.array([[ 0,0 ],
             [   0,1 ],
             [   1,0 ],
@@ -127,19 +165,41 @@ yTargetOutput = np.array([[  0,1 ],
 			[    1,0 ],
 			[    1,0 ],
 			[    0,1 ]])
+=======
+xInput =    [[ 0,0 ],
+            [  0,1 ],
+            [  1,0 ],
+            [  1,1 ]]
+#Output          
+yTargetOutputs =    [[ 0,1 ],
+                	[  1,0 ],
+                	[  1,0 ],
+                	[  0,1 ]]
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
 
 MinimalError = 0.001
 
 #Inicialization args[]:
 #[len(inputs), len(hidden1), len(hidden2)... len(output)
+<<<<<<< HEAD
 #Input numpy.array()
 #Output numpy.array()
 #Minimal error
 ann = AnnyBee([[2,3,3,2],xInput,yTargetOutput,MinimalError])
+=======
+#Input [listOfInputs]
+#Output [listOfOutputs]
+#Minimal error
+ann = AnnyBee([[2,3,3,2],xInput,yTargetOutputs,MinimalError])
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
 
 #Learn
 ann.learnBP()
 
 #Show output
+<<<<<<< HEAD
 print ann.activateNet()[-1]
+=======
+print ann.activateNet([0,1])[-1]
+>>>>>>> 166ff200ad318cc5cd76a3e9941a3f5f9dce26d6
 """
