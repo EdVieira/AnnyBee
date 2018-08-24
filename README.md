@@ -1,3 +1,3 @@
 # AnnyBee
 
-AnnyBee is a neural network class with its learning based on backpropagation.
+AnnyBee is a feedfoward neural network class with its learning based on backpropagation.
